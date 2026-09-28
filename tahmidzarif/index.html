@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Tahmid Zarif · Tutor & Mentor</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #f0f4ff;
+            --card-bg: #ffffff;
+            --primary: #6c5ce7;
+            --primary-light: #a29bfe;
+            --secondary: #00b4d8;
+            --accent: #f77f00;
+            --dark: #0b132b;
+            --text: #1e293b;
+            --text-light: #475569;
+            --border-light: #e9edf5;
+            --shadow: 0 12px 30px -8px rgba(108, 92, 231, 0.15);
+            --shadow-hover: 0 20px 40px -12px rgba(108, 92, 231, 0.25);
+            --radius: 20px;
+            --radius-sm: 12px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 24px 16px;
+        }
+
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+
+        /* ---- particles ---- */
+        .particle-bg {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .particle-bg span {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            opacity: 0.2;
+            animation: float 18s infinite alternate ease-in-out;
+        }
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(0.8); }
+            100% { transform: translate(40px, -60px) scale(1.4); }
+        }
+
+        /* ---- header ---- */
+        .header {
+            position: relative;
+            z-index: 2;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 32px 36px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            flex-wrap: wrap;
+            backdrop-filter: blur(2px);
+            border: 1px solid rgba(108, 92, 231, 0.08);
+        }
+
+        .avatar-frame {
+            width: 140px;
+            height: 140px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            padding: 5px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            box-shadow: 0 8px 24px rgba(108, 92, 231, 0.3);
+        }
+        .avatar-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid white;
+            display: block;
+            background: #eef2ff;
+        }
+        .avatar-placeholder {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.4rem;
+            font-weight: 700;
+            color: white;
+            border: 4px solid white;
+        }
+
+        .header-text {
+            flex: 1;
+        }
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 6px 20px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.25);
+        }
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: var(--dark);
+            line-height: 1.1;
+        }
+        .header h1 span {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subhead {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--primary);
+            margin: 4px 0 10px;
+        }
+        .dept-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .dept-tags span {
+            background: var(--bg);
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-light);
+            border: 1px solid var(--border-light);
+        }
+
+        @media (max-width: 700px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+                padding: 28px 20px;
+            }
+            .header h1 { font-size: 2.2rem; }
+            .dept-tags { justify-content: center; }
+            .avatar-frame { width: 120px; height: 120px; }
+        }
+
+        /* ---- grid ---- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            position: relative;
+            z-index: 2;
+        }
+        @media (max-width: 780px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 26px 24px;
+            box-shadow: var(--shadow);
+            transition: 0.25s ease;
+            border: 1px solid rgba(108, 92, 231, 0.04);
+            backdrop-filter: blur(2px);
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-light);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+            color: var(--dark);
+        }
+        .card-title .icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            background: #ede9fe;
+            color: var(--primary);
+        }
+        .icon-cyan { background: #d4f1f9; color: var(--secondary); }
+        .icon-amber { background: #fef3c7; color: var(--accent); }
+        .icon-rose { background: #ffe4e6; color: #f43f5e; }
+        .icon-green { background: #dcfce7; color: #10b981; }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        /* ---- about ---- */
+        .about-text {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+        .about-text .hl {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* ---- education ---- */
+        .edu-item {
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            padding: 16px 18px;
+            margin-bottom: 12px;
+            border-left: 5px solid var(--secondary);
+            transition: 0.2s;
+        }
+        .edu-item:hover { background: #d4f1f9; }
+        .edu-year { font-size: 0.7rem; font-weight: 700; color: var(--secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+        .edu-name { font-weight: 700; font-size: 1rem; }
+        .edu-detail { font-size: 0.85rem; color: var(--text-light); }
+
+        /* ---- credentials ---- */
+        .cred-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        @media (max-width: 480px) { .cred-grid { grid-template-columns: 1fr; } }
+        .cred-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: 0.15s;
+        }
+        .cred-item:hover { background: #ede9fe; transform: scale(1.02); }
+        .cred-rank {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        /* ---- contact ---- */
+        .contact-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .contact-list li {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: var(--bg);
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            transition: 0.2s;
+        }
+        .contact-list li:hover { background: #ede9fe; transform: translateX(4px); }
+        .contact-list a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+            text-decoration: none;
+            color: inherit;
+        }
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .ci-wa { background: #dcfce7; color: #25d366; }
+        .ci-email { background: #fce7f3; color: #db2777; }
+        .ci-loc { background: #fef3c7; color: var(--accent); }
+
+        .contact-info strong { display: block; font-weight: 700; color: var(--dark); }
+        .contact-label { font-size: 0.65rem; opacity: 0.7; }
+        .loc-item { cursor: default; }
+        .loc-item:hover { background: var(--bg); transform: none; }
+
+        /* ---- why me ---- */
+        .why-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .why-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: var(--bg);
+            padding: 14px 16px;
+            border-radius: var(--radius-sm);
+            border-left: 4px solid var(--primary);
+            font-weight: 500;
+            color: var(--text-light);
+            transition: 0.2s;
+        }
+        .why-list li:hover { background: #ede9fe; border-left-color: var(--secondary); }
+        .check {
+            width: 26px;
+            height: 26px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        /* ---- locations ---- */
+        .loc-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .loc-tag {
+            background: var(--bg);
+            padding: 8px 22px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 2px solid var(--border-light);
+            transition: 0.15s;
+            cursor: default;
+        }
+        .loc-tag:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* ---- mentorship ---- */
+        .mentor-group {
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            padding: 16px 18px;
+            margin-bottom: 14px;
+            transition: 0.2s;
+        }
+        .mentor-group:hover { background: #fce7f3; }
+        .mentor-group h4 { font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+        .subj-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .subj-tag {
+            background: white;
+            padding: 4px 16px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 2px solid var(--border-light);
+            transition: 0.15s;
+        }
+        .subj-tag:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .pref-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #fffbeb;
+            border-left: 4px solid var(--accent);
+            padding: 4px 16px 4px 14px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #b45309;
+            letter-spacing: 0.3px;
+        }
+
+        /* ---- footer ---- */
+        .footer {
+            text-align: center;
+            margin-top: 36px;
+            padding: 24px 0;
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            position: relative;
+            z-index: 2;
+        }
+        .footer span { color: var(--primary); }
+
+        /* utils */
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- particles -->
+    <div class="particle-bg" id="particles"></div>
+
+    <div class="container">
+
+        <!-- HEADER -->
+        <header class="header">
+            <div class="avatar-frame">
+                <!-- ✅ FIXED: Using the direct image URL from ibb -->
+                <img 
+                    src="https://i.ibb.co/b5kdnyXQ/tahmid.jpg" 
+                    alt="Tahmid Zarif"
+                    id="profileImg"
+                    onerror="this.style.display='none'; document.getElementById('placeholder').style.display='flex';"
+                    onload="document.getElementById('placeholder').style.display='none';"
+                >
+                <div class="avatar-placeholder" id="placeholder" style="display: none;">TZ</div>
+            </div>
+            <div class="header-text">
+                <span class="badge">📚 tutor & mentor</span>
+                <h1>Tahmid <span>Zarif</span></h1>
+                <p class="subhead">Dept of ME · KUET</p>
+                <div class="dept-tags">
+                    <span>⚡ Mechanical Engineering</span>
+                    <span>🎓 Ex-Notre Damian</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- GRID -->
+        <div class="grid">
+
+            <!-- About -->
+            <div class="card full">
+                <div class="card-title"><span class="icon">👋</span> About Me</div>
+                <p class="about-text">
+                    I am currently a student of the <span class="hl">Department of ME, KUET</span>. I am from <span class="hl">Barishal</span> district and have completed my SSC from <span class="hl">Ashuganj Tap Bidyut Kendra High School</span> with <span class="hl">General Scholarship</span>. I am willing to share my academic and admission journey with anyone interested from the backgrounds mentioned below.
+                </p>
+            </div>
+
+            <!-- Education -->
+            <div class="card">
+                <div class="card-title"><span class="icon icon-cyan">🎓</span> Education</div>
+                <div class="edu-item">
+                    <div class="edu-year">2026 – Present</div>
+                    <div class="edu-name">Khulna University of Engineering & Technology</div>
+                    <div class="edu-detail">Dept of ME</div>
+                </div>
+                <div class="edu-item">
+                    <div class="edu-year">2023 – 2025</div>
+                    <div class="edu-name">Notre Dame College, Dhaka</div>
+                    <div class="edu-detail">HSC — Dhaka Board <strong>GPA-5</strong> (PCM: 92.5%)</div>
+                </div>
+            </div>
+
+            <!-- Credentials -->
+            <div class="card">
+                <div class="card-title"><span class="icon">🏆</span> Admission Credentials</div>
+                <div class="cred-grid">
+                    <div class="cred-item"><span>RUET</span><span class="cred-rank">821st</span></div>
+                    <div class="cred-item"><span>KUET</span><span class="cred-rank">1451st</span></div>
+                    <div class="cred-item"><span>CUET</span><span class="cred-rank">515th</span></div>
+                    <div class="cred-item"><span>DU (A)</span><span class="cred-rank">2559th</span></div>
+                    <div class="cred-item"><span>SUST</span><span class="cred-rank">532nd</span></div>
+                    <div class="cred-item"><span>RU (C)</span><span class="cred-rank">229th</span></div>
+                    <div class="cred-item"><span>JU (A)</span><span class="cred-rank">165th</span></div>
+                    <div class="cred-item"><span>JnU (A)</span><span class="cred-rank">272nd</span></div>
+                    <div class="cred-item"><span>KU (A)</span><span class="cred-rank">559th</span></div>
+                    <div class="cred-item"><span>CU (A)</span><span class="cred-rank">1219th</span></div>
+                </div>
+            </div>
+
+            <!-- Contact (direct) -->
+            <div class="card">
+                <div class="card-title"><span class="icon icon-green">📬</span> Contact</div>
+                <ul class="contact-list">
+                    <li>
+                        <a href="https://wa.me/8801762235981" target="_blank">
+                            <span class="contact-icon ci-wa">📞</span>
+                            <div class="contact-info">
+                                <strong>01762235981</strong>
+                                <span class="contact-label">WhatsApp 📲</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mailto:tahmidkarim95@gmail.com?subject=Inquiry%20about%20Tutoring&body=Hi%20Tahmid%2C%20I%20came%20across%20your%20portfolio.">
+                            <span class="contact-icon ci-email">✉️</span>
+                            <div class="contact-info">
+                                <strong>tahmidkarim95@gmail.com</strong>
+                                <span class="contact-label">Email ✨</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="loc-item">
+                        <span class="contact-icon ci-loc">🏠</span>
+                        <div class="contact-info">
+                            <strong>Present:</strong> Fulbari Gate, Khulna
+                        </div>
+                    </li>
+                    <li class="loc-item">
+                        <span class="contact-icon ci-loc">📍</span>
+                        <div class="contact-info">
+                            <strong>Permanent:</strong> Barishal
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Why me -->
+            <div class="card">
+                <div class="card-title"><span class="icon icon-amber">⭐</span> Why Me?</div>
+                <ul class="why-list">
+                    <li><span class="check">✓</span><span><strong>Concept Building</strong> — Strong foundation in core topics</span></li>
+                    <li><span class="check">✓</span><span><strong>Exam Strategy & Time Management</strong> — Proven techniques</span></li>
+                    <li><span class="check">✓</span><span><strong>Friendly & Student-Focused</strong> — Personalized approach</span></li>
+                    <li><span class="check">✓</span><span><strong>Recent Admission Experience</strong> — Up-to-date insights</span></li>
+                    <li><span class="check">✓</span><span><strong>Regular Assessment & Feedback</strong> — Track progress</span></li>
+                </ul>
+            </div>
+
+            <!-- Locations -->
+            <div class="card full">
+                <div class="card-title"><span class="icon icon-rose">📍</span> Preferred Locations</div>
+                <div class="loc-tags">
+                    <span class="loc-tag">🏠 Near KUET Area, Khulna</span>
+                    <span class="loc-tag">🏠 Shibbari</span>
+                    <span class="loc-tag">🏘️ Boyra</span>
+                </div>
+            </div>
+
+            <!-- Mentorship -->
+            <div class="card full">
+                <div class="flex-between" style="margin-bottom: 12px;">
+                    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                        <span class="icon" style="background: #dcfce7; color: #10b981; width: 40px; height: 40px; border-radius: 14px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.2rem;">📖</span>
+                        <span style="font-weight: 700; font-size: 1.2rem;">Mentorship Preferences</span>
+                        <span class="pref-badge">👨‍🎓 Preferably MALE students</span>
+                    </div>
+                </div>
+                <div class="mentor-group">
+                    <h4>🎯 SSC (Class 9–10)</h4>
+                    <div class="subj-tags">
+                        <span class="subj-tag">Physics</span>
+                        <span class="subj-tag">Chemistry</span>
+                        <span class="subj-tag">Mathematics</span>
+                        <span class="subj-tag">ICT</span>
+                    </div>
+                </div>
+                <div class="mentor-group">
+                    <h4>🎯 HSC (Class 11–12)</h4>
+                    <div class="subj-tags">
+                        <span class="subj-tag">Physics</span>
+                        <span class="subj-tag">Mathematics</span>
+                        <span class="subj-tag">Chemistry</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- FOOTER with "made with Zarif's friend" -->
+        <div class="footer">
+            <p>✨ Made with ❤️ by <span>Zarif's friend</span> · Ready to help you succeed!</p>
+        </div>
+
+    </div>
+
+    <script>
+        // Particles
+        (function() {
+            const container = document.getElementById('particles');
+            const colors = ['#6c5ce7', '#a29bfe', '#00b4d8', '#f77f00', '#10b981', '#f43f5e'];
+            for (let i = 0; i < 28; i++) {
+                const span = document.createElement('span');
+                const size = 6 + Math.random() * 14;
+                span.style.width = size + 'px';
+                span.style.height = size + 'px';
+                span.style.background = colors[Math.floor(Math.random() * colors.length)];
+                span.style.left = Math.random() * 100 + '%';
+                span.style.top = Math.random() * 100 + '%';
+                span.style.animationDelay = (Math.random() * 12) + 's';
+                span.style.animationDuration = (14 + Math.random() * 16) + 's';
+                span.style.opacity = 0.12 + Math.random() * 0.15;
+                container.appendChild(span);
+            }
+        })();
+
+        // profile image fallback
+        const img = document.getElementById('profileImg');
+        const placeholder = document.getElementById('placeholder');
+        if (img.complete && img.naturalWidth === 0) {
+            img.style.display = 'none';
+            placeholder.style.display = 'flex';
+        }
+    </script>
+
+</body>
+</html>
